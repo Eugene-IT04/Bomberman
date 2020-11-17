@@ -25,6 +25,11 @@ namespace Bomberman
             //test
         }
 
+        public void draw(List<GameObjectIntr> gameObjects)
+        {
+            foreach (var gameObject in gameObjects) draw(gameObject);
+        }
+
         public void draw(GameObjectIntr gameObject)
         {
             g.DrawImage(gameObject.getTexture(), gameObject.getCoords());
