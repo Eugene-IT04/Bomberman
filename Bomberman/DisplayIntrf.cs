@@ -2,7 +2,7 @@
 
 interface DisplayIntrf
 {
-    void init(PictureBox pictureBox);
+    void init();
     void draw(GameObjectIntr obj);
     void remove(GameObjectIntr obj);
 }
