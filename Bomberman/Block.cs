@@ -7,9 +7,11 @@ namespace Bomberman
         Point coords;
         static Size size;
         static Bitmap texture;
+        bool breakable;
 
-        public Block(Point coord)
+        public Block(Point coord, bool breakable)
         {
+            this.breakable = breakable;
             //test
             coords = coord;
             size = new Size(50, 50);

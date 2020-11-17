@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Windows.Forms;
 
 namespace Bomberman
 {
@@ -7,6 +8,20 @@ namespace Bomberman
         Point coords;
         Size size;
         Bitmap texture;
+        public KeyEventArgs upKey;
+        public KeyEventArgs downKey;
+        public KeyEventArgs rightKey;
+        public KeyEventArgs leftKey;
+        public Directions direction = Directions.stop;
+
+        public Bomberman(Point startPoint, KeyEventArgs upKey, KeyEventArgs downKey, KeyEventArgs rightKey, KeyEventArgs leftKey)
+        {
+            this.coords = startPoint;
+            this.upKey = upKey;
+            this.downKey = downKey;
+            this.rightKey = rightKey;
+            this.leftKey = leftKey;
+        }
 
         public Point getCoords()
         {
@@ -23,10 +38,10 @@ namespace Bomberman
             return texture;
         }
 
-        public void goUp() { }
-        public void goDown() { }
-        public void goRight() { }
-        public void goLeft() { }
+        public void goUp() { coords.Y--; }
+        public void goDown() { coords.Y++; }
+        public void goRight() { coords.X++; }
+        public void goLeft() { coords.X--; }
         public void plantBomb() { }
 
     }

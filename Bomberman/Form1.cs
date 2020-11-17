@@ -17,11 +17,16 @@ namespace Bomberman
         {
             InitializeComponent();
         }
-        //test
-        private void mainPictureBox_Click(object sender, EventArgs e)
+        private void startButton_Click(object sender, EventArgs e)
         {
+            startButton.Visible = false;
+            startButton.Enabled = false;
             game = new Game(mainPictureBox);
         }
-        //test
+
+        private void mainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
     }
 }

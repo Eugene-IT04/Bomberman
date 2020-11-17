@@ -48,6 +48,7 @@
     <Compile Include="Block.cs" />
     <Compile Include="Bomberman.cs" />
     <Compile Include="Controlled.cs" />
+    <Compile Include="Directions.cs" />
     <Compile Include="Display.cs" />
     <Compile Include="DisplayIntrf.cs" />
     <Compile Include="Form1.cs">

@@ -35,6 +35,11 @@ namespace Bomberman
             g.DrawImage(gameObject.getTexture(), gameObject.getCoords());
         }
 
+        public void remove(List<GameObjectIntr> gameObjects)
+        {
+            foreach (var gameObject in gameObjects) remove(gameObject);
+        }
+
         public void remove(GameObjectIntr gameObject)
         {
             //test
