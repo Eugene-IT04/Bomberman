@@ -26,7 +26,16 @@ namespace Bomberman
 
         private void mainForm_KeyDown(object sender, KeyEventArgs e)
         {
+            game.keyDown(e.KeyCode);
+            e.Handled = true;
+            e.SuppressKeyPress = true;
+        }
 
+        private void mainForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            game.keyUp(e.KeyCode);
+            e.Handled = true;
+            e.SuppressKeyPress = true;
         }
     }
 }

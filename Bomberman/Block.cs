@@ -18,7 +18,7 @@ namespace Bomberman
             texture = new Bitmap(size.Width, size.Height);
             using (var g = Graphics.FromImage(texture))
                 g.Clear(Color.Black);
-            //
+            //test
         }
 
         public Point getCoords()

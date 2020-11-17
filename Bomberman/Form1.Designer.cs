@@ -58,9 +58,11 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.startButton);
             this.Controls.Add(this.mainPictureBox);
+            this.DoubleBuffered = true;
             this.Name = "mainForm";
             this.Text = "Bomberman";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.mainForm_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.mainForm_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.mainPictureBox)).EndInit();
             this.ResumeLayout(false);
 
