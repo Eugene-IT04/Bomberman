@@ -10,6 +10,7 @@ namespace Bomberman
 {
     class Display : DisplayIntrf
     {
+        private object lockObject = new object();
         PictureBox pb;
         Bitmap bt;
         Graphics g;
@@ -27,40 +28,60 @@ namespace Bomberman
             //test
         }
 
+        public void update()
+        {
+            pb.Image = bt;
+            pb.Refresh();
+            g.Clear(Color.Aqua);
+        }
+
         public void draw(List<GameObjectIntr> gameObjects)
         {
             foreach (var gameObject in gameObjects) dr(gameObject);
-            pb.Image = bt;
+        }
+
+        public void draw(List<Bomberman> gameObjects)
+        {
+            foreach (var gameObject in gameObjects) dr(gameObject);
         }
 
         public void draw(GameObjectIntr gameObject)
         {
             dr(gameObject);
-            pb.Image = bt;
         }
 
         public void remove(List<GameObjectIntr> gameObjects)
         {
             foreach (var gameObject in gameObjects) rm(gameObject);
-            pb.Image = bt;
+            lock (lockObject)
+            {
+                pb.Image = bt;
+            }
+
         }
 
         public void remove(GameObjectIntr gameObject)
         {
             rm(gameObject);
-            pb.Image = bt;
+            lock (lockObject)
+            {
+                pb.Image = bt;
+            }
         }
 
         private void rm(GameObjectIntr gameObject)
         {
             //test
-            g.FillRectangle(Brushes.AliceBlue, new Rectangle(gameObject.getCoords(), gameObject.getSize()));
+            lock (lockObject)
+            {
+                g.FillRectangle(Brushes.AliceBlue, new RectangleF(gameObject.getCoords(), gameObject.getSize()));
+            }
             //test
         }
 
         private void dr(GameObjectIntr gameObject)
         {
-            g.DrawImage(gameObject.getTexture(), gameObject.getCoords());
+                g.DrawImage(gameObject.getTexture(), gameObject.getCoords());
         }
     }
 }

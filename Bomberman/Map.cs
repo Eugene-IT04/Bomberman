@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
+using System.Drawing;
 
 namespace Bomberman
 {
@@ -14,6 +15,7 @@ namespace Bomberman
         List<Bomberman> bombermans;
         public List<GameObjectIntr> needUpdate;
         int width, height;
+        PointF moveUp = new PointF(0, -1), moveDown = new PointF(0, 1), moveLeft = new PointF(-1, 0), moveRight = new PointF(1, 0), stop = new PointF(0, 0);
 
         public Map(int width, int height)
         {
@@ -30,38 +32,54 @@ namespace Bomberman
             bombermans.Add(bomberman);
         }
 
+        public List<Bomberman> getBombermans()
+        {
+            return bombermans;
+        }
+
+        private PointF checkCollisions(Bomberman b, PointF moveVector)
+        {
+            PointF res = moveVector;
+            PointF current;
+            for(int i = 0; i < gameObjects.Count; i++)
+            {
+                current = b.checkColl(gameObjects[i], moveVector);
+                if (Math.Abs(res.X) > current.X) res.X = current.X;
+                if (Math.Abs(res.Y) > current.Y) res.Y = current.Y;
+            }
+            return res;
+        }
+
+        private PointF multiplyVector(PointF vector, float number)
+        {
+            return new PointF(vector.X * number, vector.Y * number);
+        }
+
         public bool tic()
         {
             bool res = false;
-            foreach(var b in bombermans)
+            for(int i = 0; i < bombermans.Count; i++)
             {
+                var b = bombermans[i];
                 if (b.direction == Directions.up)
                 {
-                    b.action = new Action(b.goUp);
-                    res = true;
-                    needUpdate.Add(b);
+                    b.moveVector = checkCollisions(b, multiplyVector(moveUp, b.speed));
                 }
                 else if (b.direction == Directions.down)
                 {
-                    b.action = new Action(b.goDown);
-                    res = true;
-                    needUpdate.Add(b);
+                    b.moveVector = checkCollisions(b, multiplyVector(moveDown, b.speed));
                 }
                 else if (b.direction == Directions.right)
                 {
-                    b.action = new Action(b.goRight);
-                    res = true;
-                    needUpdate.Add(b);
+                    b.moveVector = checkCollisions(b, multiplyVector(moveRight, b.speed));
                 }
                 else if (b.direction == Directions.left)
                 {
-                    b.action = new Action(b.goLeft);
-                    res = true;
-                    needUpdate.Add(b);
+                    b.moveVector = checkCollisions(b, multiplyVector(moveLeft, b.speed));
                 }
                 else if(b.direction == Directions.stop)
                 {
-                    b.action = new Action(() => { });
+                    b.moveVector = stop;
                 }
             }
             return res;
@@ -69,7 +87,7 @@ namespace Bomberman
 
         public void doActions()
         {
-            foreach (var b in bombermans) b.action();
+            foreach (var b in bombermans) b.move();
         }
 
         public List<GameObjectIntr> getGameObjects()

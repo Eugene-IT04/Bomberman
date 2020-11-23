@@ -3,10 +3,8 @@ using System.Windows.Forms;
 
 namespace Bomberman
 {
-    class Bomberman : GameObjectIntr, Controlled
+    class Bomberman : Template
     {
-        Point coords;
-        Size size;
         Bitmap texture;
         public Keys upKey;
         public Keys downKey;
@@ -14,6 +12,8 @@ namespace Bomberman
         public Keys leftKey;
         public Directions direction = Directions.stop;
         public Action action;
+        public float speed = 2.5f;
+        public PointF moveVector;
         int step = 2;
 
         public Bomberman(Point startPoint, Keys upKey, Keys downKey, Keys rightKey, Keys leftKey)
@@ -32,25 +32,16 @@ namespace Bomberman
             //test
         }
 
-        public Point getCoords()
-        {
-            return coords;
-        }
-
-        public Size getSize()
-        {
-            return size;
-        }
-
-        public Bitmap getTexture()
+        public override Bitmap getTexture()
         {
             return texture;
         }
 
-        public void goUp() { coords.Y -= step; }
-        public void goDown() { coords.Y += step; }
-        public void goRight() { coords.X += step; }
-        public void goLeft() { coords.X -= step; }
+        public void move()
+        {
+            coords.X += moveVector.X;
+            coords.Y += moveVector.Y;
+        }
         public void plantBomb() { }
 
     }

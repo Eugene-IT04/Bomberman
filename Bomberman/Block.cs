@@ -2,10 +2,8 @@
 
 namespace Bomberman
 {
-    class Block : GameObjectIntr
+    class Block : Template
     {
-        Point coords;
-        static Size size;
         static Bitmap texture;
         bool breakable;
 
@@ -21,17 +19,7 @@ namespace Bomberman
             //test
         }
 
-        public Point getCoords()
-        {
-            return coords;
-        }
-
-        public Size getSize()
-        {
-            return size;
-        }
-
-        public Bitmap getTexture()
+        public override Bitmap getTexture()
         {
             return texture;
         }
