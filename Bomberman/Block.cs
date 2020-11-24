@@ -4,8 +4,23 @@ namespace Bomberman
 {
     class Block : Template
     {
-        static Bitmap texture;
-        bool breakable;
+        static Bitmap texture1;
+        static Bitmap texture2;
+        public bool breakable;
+
+        static Block()
+        {
+            texture1 = new Bitmap(50, 50);
+            texture2 = new Bitmap(50, 50);
+            using (var g = Graphics.FromImage(texture1))
+            {
+                g.Clear(Color.Gray);
+            }
+            using (var g = Graphics.FromImage(texture2))
+            {
+                g.Clear(Color.DarkSlateGray);
+            }
+        }
 
         public Block(Point coord, bool breakable)
         {
@@ -13,15 +28,13 @@ namespace Bomberman
             //test
             coords = coord;
             size = new Size(50, 50);
-            texture = new Bitmap(size.Width, size.Height);
-            using (var g = Graphics.FromImage(texture))
-                g.Clear(Color.Black);
             //test
         }
 
         public override Bitmap getTexture()
         {
-            return texture;
+            if (breakable) return texture1;
+            else return texture2;
         }
     }
 }

@@ -13,7 +13,8 @@ namespace Bomberman
     {
         List<GameObjectIntr> gameObjects;
         List<Bomberman> bombermans;
-        public List<GameObjectIntr> needUpdate;
+        List<Bomb> bombs;
+        List<Flame> flames;
         int width, height;
         PointF moveUp = new PointF(0, -1), moveDown = new PointF(0, 1), moveLeft = new PointF(-1, 0), moveRight = new PointF(1, 0), stop = new PointF(0, 0);
 
@@ -21,7 +22,8 @@ namespace Bomberman
         {
             gameObjects = new List<GameObjectIntr>();
             bombermans = new List<Bomberman>();
-            needUpdate = new List<GameObjectIntr>();
+            bombs = new List<Bomb>();
+            flames = new List<Flame>();
             this.width = width;
             this.height = height;
             fill();
@@ -37,6 +39,11 @@ namespace Bomberman
             return bombermans;
         }
 
+        public List<Bomb> getBombs()
+        {
+            return bombs;
+        }
+
         private PointF checkCollisions(Bomberman b, PointF moveVector)
         {
             PointF res = moveVector;
@@ -44,8 +51,8 @@ namespace Bomberman
             for(int i = 0; i < gameObjects.Count; i++)
             {
                 current = b.checkColl(gameObjects[i], moveVector);
-                if (Math.Abs(res.X) > current.X) res.X = current.X;
-                if (Math.Abs(res.Y) > current.Y) res.Y = current.Y;
+                if (Math.Abs(res.X) > Math.Abs(current.X)) res.X = current.X;
+                if (Math.Abs(res.Y) > Math.Abs(current.Y)) res.Y = current.Y;
             }
             return res;
         }
@@ -55,10 +62,78 @@ namespace Bomberman
             return new PointF(vector.X * number, vector.Y * number);
         }
 
-        public bool tic()
+        private void bombTic()
         {
-            bool res = false;
-            for(int i = 0; i < bombermans.Count; i++)
+            for(int i = 0; i < bombs.Count; i++)
+            {
+                if (bombs[i].exploded())
+                {
+                    flames.AddRange(bombs[i].getFlames());
+                    bombs.RemoveAt(i);
+                    i--;
+                }
+            }
+        }
+
+        private void processFlames()
+        {
+            Flame nextFlame;
+            for(int i = 0; i < flames.Count; i++)
+            {
+                if (flames[i].active)
+                {
+                    for (int j = 0; j < gameObjects.Count; j++)
+                    {
+                        if (flames[i].checkColl(gameObjects[j]))
+                        {
+                            Block bl = (Block)gameObjects[j];
+                            if (bl.breakable) gameObjects.RemoveAt(j);
+                            else flames[i].tics = 0;
+                            flames[i].power = 0;
+                            flames[i].active = false;
+                            break;
+                        }
+                    }
+                    for (int j = 0; j < bombermans.Count; j++)
+                    {
+                        if (flames[i].active && flames[i].checkColl(bombermans[j]))
+                        {
+                            bombermans.RemoveAt(j);
+                            flames[i].power = 0;
+                            flames[i].active = false;
+                            break;
+                        }
+                    }
+                    nextFlame = flames[i].spread();
+                    if (nextFlame != null) flames.Add(nextFlame);
+                }
+            }
+            clearFlames();
+        }
+
+        public void clearFlames()
+        {
+            for(int i = 0; i < flames.Count; i++)
+            {
+                flames[i].tics--;
+                if (flames[i].tics <= 0)
+                {
+                    flames.RemoveAt(i);
+                    i--;
+                }
+            }
+        }
+
+        public List<Flame> getFlame()
+        {
+            return flames;
+        }
+
+        public void tic()
+        {
+            bombTic();
+            processFlames();
+            for (int i = 0; i < bombermans.Count; i++)
             {
                 var b = bombermans[i];
                 if (b.direction == Directions.up)
@@ -82,7 +157,6 @@ namespace Bomberman
                     b.moveVector = stop;
                 }
             }
-            return res;
         }
 
         public void doActions()
@@ -97,7 +171,21 @@ namespace Bomberman
 
         private void fill()
         {
-            gameObjects.Add(new Block(new System.Drawing.Point(10, 10), false));
+            bool cont = false;
+            for(int i = 0; i < 16; i++)
+            {
+                for(int j = 0; j < 9; j++)
+                {
+                    cont = (i == 1 && j == 1) || (i == 1 && j == 2) || (i == 2 && j == 1) || (i == 13 && j == 7) || (i == 13 && j == 6) || (i == 12 && j == 7);
+                    if (cont)
+                    {
+                        cont = false;
+                        continue;
+                    }
+                    if((i + j) % 2 == 0 && i % 2 == 0) gameObjects.Add(new Block(new Point(50 * i + i, 50 * j + j), false));
+                    else gameObjects.Add(new Block(new Point(50 * i + i, 50 * j + j), true));
+                }
+            }
         }
 
         public void keyDown(Keys key)
@@ -108,6 +196,7 @@ namespace Bomberman
                 else if (key == b.downKey) b.direction = Directions.down;
                 else if (key == b.leftKey) b.direction = Directions.left;
                 else if (key == b.rightKey) b.direction = Directions.right;
+                else if (key == b.plantBombKey) bombs.Add(b.plantBomb());
             }
         }
         

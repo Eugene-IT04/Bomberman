@@ -29,24 +29,10 @@ namespace Bomberman
             display.init();
             display.draw(map.getGameObjects());
             //test
-            b = new Bomberman(new Point(70, 70), Keys.Up, Keys.Down, Keys.Right, Keys.Left);
-            display.draw(b);
+            b = new Bomberman(new Point(51, 51), Keys.Up, Keys.Down, Keys.Right, Keys.Left, Keys.Space);
             map.addBomberman(b);
-            b2 = new Bomberman(new Point(200, 200), Keys.W, Keys.S, Keys.D, Keys.A);
-            b3 = new Bomberman(new Point(220, 200), Keys.W, Keys.S, Keys.D, Keys.A);
-            b4 = new Bomberman(new Point(200, 220), Keys.W, Keys.S, Keys.D, Keys.A);
-            b5 = new Bomberman(new Point(240, 200), Keys.W, Keys.S, Keys.D, Keys.A);
-            b6 = new Bomberman(new Point(200, 240), Keys.W, Keys.S, Keys.D, Keys.A);
-            b7 = new Bomberman(new Point(260, 200), Keys.W, Keys.S, Keys.D, Keys.A);
-            b8 = new Bomberman(new Point(200, 260), Keys.W, Keys.S, Keys.D, Keys.A);
-            display.draw(b2);
+            b2 = new Bomberman(new Point(663, 357), Keys.W, Keys.S, Keys.D, Keys.A, Keys.V);
             map.addBomberman(b2);
-            map.addBomberman(b3);
-            map.addBomberman(b4);
-            map.addBomberman(b5);
-            map.addBomberman(b6);
-            map.addBomberman(b7);
-            map.addBomberman(b8);
             //test
             timer = new System.Windows.Forms.Timer();
             timer.Interval = 2;
@@ -69,7 +55,10 @@ namespace Bomberman
             map.tic();
             map.doActions();
             display.draw(map.getGameObjects());
+            display.draw(map.getBombs());
             display.draw(map.getBombermans());
+            display.draw(map.getFlame());
+            //map.clearFlames();
             display.update();
         }
     }

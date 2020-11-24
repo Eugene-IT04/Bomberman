@@ -10,20 +10,20 @@ namespace Bomberman
         public Keys downKey;
         public Keys rightKey;
         public Keys leftKey;
-        public Directions direction = Directions.stop;
-        public Action action;
-        public float speed = 2.5f;
+        public Keys plantBombKey;
+        public float speed = 1.5f;
         public PointF moveVector;
-        int step = 2;
+        public Directions direction;
 
-        public Bomberman(Point startPoint, Keys upKey, Keys downKey, Keys rightKey, Keys leftKey)
+        public Bomberman(Point startPoint, Keys upKey, Keys downKey, Keys rightKey, Keys leftKey, Keys plantBombKey)
         {
-            action = new Action(() => { });
+            direction = Directions.stop;
             this.coords = startPoint;
             this.upKey = upKey;
             this.downKey = downKey;
             this.rightKey = rightKey;
             this.leftKey = leftKey;
+            this.plantBombKey = plantBombKey;
             //test
             size = new Size(50, 50);
             texture = new Bitmap(size.Width, size.Height);
@@ -42,8 +42,7 @@ namespace Bomberman
             coords.X += moveVector.X;
             coords.Y += moveVector.Y;
         }
-        public void plantBomb() { }
+        public Bomb plantBomb() { return new Bomb(new PointF(coords.X, coords.Y)); }
 
     }
-    public delegate void Action();
 }

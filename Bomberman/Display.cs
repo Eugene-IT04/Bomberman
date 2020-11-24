@@ -10,7 +10,6 @@ namespace Bomberman
 {
     class Display : DisplayIntrf
     {
-        private object lockObject = new object();
         PictureBox pb;
         Bitmap bt;
         Graphics g;
@@ -24,7 +23,7 @@ namespace Bomberman
         public void init()
         {
             //test
-            g.Clear(Color.AliceBlue);
+            g.Clear(Color.LightCyan);
             //test
         }
 
@@ -32,7 +31,7 @@ namespace Bomberman
         {
             pb.Image = bt;
             pb.Refresh();
-            g.Clear(Color.Aqua);
+            g.Clear(Color.LightCyan);
         }
 
         public void draw(List<GameObjectIntr> gameObjects)
@@ -45,38 +44,19 @@ namespace Bomberman
             foreach (var gameObject in gameObjects) dr(gameObject);
         }
 
+        public void draw(List<Bomb> gameObjects)
+        {
+            foreach (var gameObject in gameObjects) dr(gameObject);
+        }
+
+        public void draw(List<Flame> gameObjects)
+        {
+            foreach (var gameObject in gameObjects) dr(gameObject);
+        }
+
         public void draw(GameObjectIntr gameObject)
         {
             dr(gameObject);
-        }
-
-        public void remove(List<GameObjectIntr> gameObjects)
-        {
-            foreach (var gameObject in gameObjects) rm(gameObject);
-            lock (lockObject)
-            {
-                pb.Image = bt;
-            }
-
-        }
-
-        public void remove(GameObjectIntr gameObject)
-        {
-            rm(gameObject);
-            lock (lockObject)
-            {
-                pb.Image = bt;
-            }
-        }
-
-        private void rm(GameObjectIntr gameObject)
-        {
-            //test
-            lock (lockObject)
-            {
-                g.FillRectangle(Brushes.AliceBlue, new RectangleF(gameObject.getCoords(), gameObject.getSize()));
-            }
-            //test
         }
 
         private void dr(GameObjectIntr gameObject)
