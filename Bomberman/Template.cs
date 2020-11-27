@@ -42,10 +42,11 @@ namespace Bomberman
         {
             float onX, onY;
             float x1 = coords.X + moveVector.X, x2 = coords.X + size.Width + moveVector.X, x3 = gameObject.getCoords().X, x4 = gameObject.getCoords().X + gameObject.getSize().Width;
-            float y1 = coords.Y + moveVector.Y, y2 = coords.Y + size.Height + moveVector.Y, y3 = gameObject.getCoords().Y, y4 = gameObject.getCoords().Y + gameObject.getSize().Height;
             onX = overlap(x1, x2, x3, x4);
+            if (onX <= 0) return moveVector;
+            float y1 = coords.Y + moveVector.Y, y2 = coords.Y + size.Height + moveVector.Y, y3 = gameObject.getCoords().Y, y4 = gameObject.getCoords().Y + gameObject.getSize().Height;
             onY = overlap(y1, y2, y3, y4);
-            if (onX <= 0 || onY <= 0) return moveVector;
+            if (onY <= 0) return moveVector;
         
             PointF rPoint = new PointF(0, 0);
             if (moveVector.X > 0) rPoint.X = moveVector.X - onX;

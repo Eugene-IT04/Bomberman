@@ -11,7 +11,7 @@ namespace Bomberman
     {
         static Bitmap texture;
         int tics = 170;
-        int power = 2;
+        int power = 1;
 
         public Bomb(PointF coords)
         {
