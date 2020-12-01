@@ -242,7 +242,7 @@ namespace Bomberman
             if (bombermans.Count == 1)
             {
                 gameIsOn = false;
-                MessageBox.Show(bombermans[0].name + " is win!");
+                MessageBox.Show(bombermans[0].name + " won!");
             }
         }
     }

@@ -6,7 +6,7 @@ namespace Bomberman
 {
     class Bomberman : Template
     {
-        Bitmap texture;
+        Bitmap texture_up, texture_down, texture_left, texture_right, texture_stop;
         public Keys upKey;
         public Keys downKey;
         public Keys rightKey;
@@ -20,8 +20,13 @@ namespace Bomberman
         public int bombPower = 1;
         public String name;
 
-        public Bomberman(Point startPoint, Keys upKey, Keys downKey, Keys rightKey, Keys leftKey, Keys plantBombKey, String name)
+        public Bomberman(Point startPoint, Keys upKey, Keys downKey, Keys rightKey, Keys leftKey, Keys plantBombKey, String name, Bitmap texture_up, Bitmap texture_down, Bitmap texture_right, Bitmap texture_left, Bitmap texture_stop)
         {
+            this.texture_down = texture_down;
+            this.texture_left = texture_left;
+            this.texture_up = texture_up;
+            this.texture_right = texture_right;
+            this.texture_stop = texture_stop;
             this.name = name;
             direction = Directions.stop;
             this.coords = startPoint;
@@ -30,17 +35,16 @@ namespace Bomberman
             this.rightKey = rightKey;
             this.leftKey = leftKey;
             this.plantBombKey = plantBombKey;
-            //test
             size = new Size(45, 45);
-            texture = new Bitmap(size.Width, size.Height);
-            using (var g = Graphics.FromImage(texture))
-                g.Clear(Color.Green);
-            //test
         }
 
         public override Bitmap getTexture()
         {
-            return texture;
+            if (direction == Directions.up) return texture_up;
+            else if (direction == Directions.down) return texture_down;
+            else if (direction == Directions.right) return texture_right;
+            else if (direction == Directions.left) return texture_left;
+            else return texture_stop;
         }
 
         public void move()

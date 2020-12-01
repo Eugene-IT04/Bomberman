@@ -103,5 +103,35 @@
   <ItemGroup>
     <None Include="Resources\bomb_texture2.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bomberman_green_down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bomberman_green_left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bomberman_green_right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bomberman_green_stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bomberman_green_up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bomberman_red_down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bomberman_red_left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bomberman_red_right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bomberman_red_stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bomberman_red_up.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

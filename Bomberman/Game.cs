@@ -29,9 +29,11 @@ namespace Bomberman
             display.init();
             display.draw(map.getGameObjects());
             //test
-            b = new Bomberman(new Point(50, 50), Keys.Up, Keys.Down, Keys.Right, Keys.Left, Keys.Space, "Player1");
+            b = new Bomberman(new Point(50, 50), Keys.Up, Keys.Down, Keys.Right, Keys.Left, Keys.Space, "Player1",
+                Properties.Resources.bomberman_green_up, Properties.Resources.bomberman_green_down, Properties.Resources.bomberman_green_right, Properties.Resources.bomberman_green_left, Properties.Resources.bomberman_green_stop);
             map.addBomberman(b);
-            b2 = new Bomberman(new Point(850, 550), Keys.W, Keys.S, Keys.D, Keys.A, Keys.C, "Player2");
+            b2 = new Bomberman(new Point(850, 550), Keys.W, Keys.S, Keys.D, Keys.A, Keys.C, "Player2", 
+                Properties.Resources.bomberman_red_up, Properties.Resources.bomberman_red_down, Properties.Resources.bomberman_red_right, Properties.Resources.bomberman_red_left, Properties.Resources.bomberman_red_stop);
             b2.bombPower = 2;
             b2.maxBombsCount = 2;
             map.addBomberman(b2);
@@ -54,17 +56,15 @@ namespace Bomberman
 
         private void tic(object sender, EventArgs e)
         {
-            if (map.gameIsOn)
-            {
-                map.tic();
-                map.doActions();
-                display.draw(map.getGameObjects());
-                display.draw(map.getBombs());
-                display.draw(map.getBombermans());
-                display.draw(map.getFlame());
-                //map.clearFlames();
-                display.update();
-            }
+            map.tic();
+            map.doActions();
+            display.draw(map.getGameObjects());
+            display.draw(map.getBombs());
+            display.draw(map.getBombermans());
+            display.draw(map.getFlame());
+            display.update();
+            if (!map.gameIsOn) timer.Enabled = false;
+            
         }
     }
 }
