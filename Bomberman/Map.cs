@@ -195,16 +195,16 @@ namespace Bomberman
         private void fill()
         {
             bool cont;
-            for(int i = 0; i < 16; i++)
+            for(int i = 0; i < 19; i++)
             {
-                for (int j = 0; j < 9; j++)
+                for (int j = 0; j < 13; j++)
                 {
-                    cont = (i == 1 && j == 1) || (i == 1 && j == 2) || (i == 2 && j == 1) || (i == 13 && j == 7) || (i == 13 && j == 6) || (i == 12 && j == 7);
+                    cont = (i == 1 && j == 1) || (i == 1 && j == 2) || (i == 2 && j == 1) || (i == 17 && j == 11) || (i == 17 && j == 10) || (i == 16 && j == 11);
                     if (cont)
                     {
                         continue;
                     }
-                    if (((i + j) % 2 == 0 && i % 2 == 0) || i == 0 || i == 15 || j == 0 || j == 8) gameObjects.Add(new Block(new Point(50 * i, 50 * j), false));
+                    if (((i + j) % 2 == 0 && i % 2 == 0) || i == 0 || i == 18 || j == 0 || j == 12) gameObjects.Add(new Block(new Point(50 * i, 50 * j), false));
                     else gameObjects.Add(new Block(new Point(50 * i, 50 * j), true));
                 }
             }

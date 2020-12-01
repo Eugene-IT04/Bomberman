@@ -31,7 +31,7 @@ namespace Bomberman
             //test
             b = new Bomberman(new Point(50, 50), Keys.Up, Keys.Down, Keys.Right, Keys.Left, Keys.Space, "Player1");
             map.addBomberman(b);
-            b2 = new Bomberman(new Point(650, 350), Keys.W, Keys.S, Keys.D, Keys.A, Keys.C, "Player2");
+            b2 = new Bomberman(new Point(850, 550), Keys.W, Keys.S, Keys.D, Keys.A, Keys.C, "Player2");
             b2.bombPower = 2;
             b2.maxBombsCount = 2;
             map.addBomberman(b2);

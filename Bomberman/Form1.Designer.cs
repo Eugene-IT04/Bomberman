@@ -37,13 +37,13 @@
             // 
             this.mainPictureBox.Location = new System.Drawing.Point(1, 0);
             this.mainPictureBox.Name = "mainPictureBox";
-            this.mainPictureBox.Size = new System.Drawing.Size(817, 460);
+            this.mainPictureBox.Size = new System.Drawing.Size(950, 650);
             this.mainPictureBox.TabIndex = 0;
             this.mainPictureBox.TabStop = false;
             // 
             // startButton
             // 
-            this.startButton.Location = new System.Drawing.Point(378, 211);
+            this.startButton.Location = new System.Drawing.Point(460, 293);
             this.startButton.Name = "startButton";
             this.startButton.Size = new System.Drawing.Size(75, 23);
             this.startButton.TabIndex = 1;
@@ -55,10 +55,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(819, 461);
+            this.ClientSize = new System.Drawing.Size(954, 652);
             this.Controls.Add(this.startButton);
             this.Controls.Add(this.mainPictureBox);
             this.DoubleBuffered = true;
+            this.MaximumSize = new System.Drawing.Size(970, 691);
+            this.MinimumSize = new System.Drawing.Size(970, 691);
             this.Name = "mainForm";
             this.Text = "Bomberman";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.mainForm_KeyDown);
