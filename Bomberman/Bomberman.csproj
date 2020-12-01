@@ -48,6 +48,7 @@
     <Compile Include="Block.cs" />
     <Compile Include="Bomb.cs" />
     <Compile Include="Bomberman.cs" />
+    <Compile Include="Bonus.cs" />
     <Compile Include="Controlled.cs" />
     <Compile Include="Directions.cs" />
     <Compile Include="Display.cs" />
@@ -132,6 +133,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\bomberman_red_up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\incrBombCount_bonus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\powerUpBomb_bonus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\speedUp_bonus.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

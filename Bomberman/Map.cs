@@ -15,18 +15,16 @@ namespace Bomberman
         List<Bomberman> bombermans;
         List<Bomb> bombs;
         List<Flame> flames;
+        List<Bonus> bonuses;
         public bool gameIsOn = true;
-        int width, height;
         PointF moveUp = new PointF(0, -1), moveDown = new PointF(0, 1), moveLeft = new PointF(-1, 0), moveRight = new PointF(1, 0), stop = new PointF(0, 0);
-
-        public Map(int width, int height)
+        public Map()
         {
             gameObjects = new List<GameObjectIntr>();
             bombermans = new List<Bomberman>();
             bombs = new List<Bomb>();
             flames = new List<Flame>();
-            this.width = width;
-            this.height = height;
+            bonuses = new List<Bonus>();
             fill();
         }
 
@@ -45,10 +43,23 @@ namespace Bomberman
             return bombs;
         }
 
+        public List<Bonus> getBonuses()
+        {
+            return bonuses;
+        }
+
         private PointF checkCollisions(Bomberman b, PointF moveVector)
         {
             PointF res = moveVector;
             PointF current;
+            for(int i = 0; i < bonuses.Count; i++)
+            {
+                if (b.checkColl(bonuses[i]))
+                {
+                    bonuses[i].improveBomberman(b);
+                    bonuses.RemoveAt(i);
+                }
+            }
             for(int i = 0; i < gameObjects.Count; i++)
             {
                 current = b.checkColl(gameObjects[i], moveVector);
@@ -96,6 +107,7 @@ namespace Bomberman
         private void processFlames()
         {
             Flame nextFlame;
+            Random r = new Random();
             for(int i = 0; i < flames.Count; i++)
             {
                 if (flames[i].active)
@@ -105,7 +117,14 @@ namespace Bomberman
                         if (flames[i].checkColl(gameObjects[j]) && flames[i].active)
                         {
                             Block bl = (Block)gameObjects[j];
-                            if (bl.breakable) gameObjects.RemoveAt(j);
+                            if (bl.breakable)
+                            {
+                                if(r.Next(100) < 15)
+                                {
+                                    bonuses.Add(new Bonus(gameObjects[j].getCoords()));
+                                }
+                                gameObjects.RemoveAt(j);
+                            }
                             else flames[i].tics = 0;
                             flames[i].power = 0;
                             flames[i].active = false;
@@ -120,6 +139,16 @@ namespace Bomberman
                             {
                                 bombermans.RemoveAt(j);
                                 checkForWinner();
+                                flames[i].power = 0;
+                                flames[i].active = false;
+                                break;
+                            }
+                        }
+                        for (int j = 0; j < bonuses.Count; j++)
+                        {
+                            if (flames[i].checkColl(bonuses[j]))
+                            {
+                                bonuses.RemoveAt(j);
                                 flames[i].power = 0;
                                 flames[i].active = false;
                                 break;

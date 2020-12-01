@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace Bomberman
 {
-    class Display : DisplayIntrf
+    class Display
     {
         PictureBox pb;
         Bitmap bt;
@@ -18,13 +18,6 @@ namespace Bomberman
             this.pb = pb;
             bt = new Bitmap(pb.Width, pb.Height);
             g = Graphics.FromImage(bt);
-        }
-
-        public void init()
-        {
-            //test
-            g.Clear(Color.Blue);
-            //test
         }
 
         public void update()
@@ -50,6 +43,11 @@ namespace Bomberman
         }
 
         public void draw(List<Flame> gameObjects)
+        {
+            foreach (var gameObject in gameObjects) dr(gameObject);
+        }
+
+        public void draw(List<Bonus> gameObjects)
         {
             foreach (var gameObject in gameObjects) dr(gameObject);
         }
