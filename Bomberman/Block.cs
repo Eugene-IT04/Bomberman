@@ -10,16 +10,8 @@ namespace Bomberman
 
         static Block()
         {
-            texture1 = new Bitmap(50, 50);
-            texture2 = new Bitmap(50, 50);
-            using (var g = Graphics.FromImage(texture1))
-            {
-                g.Clear(Color.Gray);
-            }
-            using (var g = Graphics.FromImage(texture2))
-            {
-                g.Clear(Color.DarkSlateGray);
-            }
+            texture1 = Properties.Resources.block_standart_texture2;
+            texture2 = Properties.Resources.block_unbreakable_texture;
         }
 
         public Block(Point coord, bool breakable)

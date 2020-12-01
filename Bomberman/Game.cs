@@ -17,7 +17,7 @@ namespace Bomberman
         System.Windows.Forms.Timer timer;
         object lock_obj = new object();
         //test
-        Bomberman b, b2, b3, b4, b5, b6, b7, b8;
+        Bomberman b, b2;
         //test
 
         public Game(PictureBox pictureBox)
@@ -29,9 +29,9 @@ namespace Bomberman
             display.init();
             display.draw(map.getGameObjects());
             //test
-            b = new Bomberman(new Point(51, 51), Keys.Up, Keys.Down, Keys.Right, Keys.Left, Keys.Space);
+            b = new Bomberman(new Point(50, 50), Keys.Up, Keys.Down, Keys.Right, Keys.Left, Keys.Space);
             map.addBomberman(b);
-            b2 = new Bomberman(new Point(663, 357), Keys.W, Keys.S, Keys.D, Keys.A, Keys.V);
+            b2 = new Bomberman(new Point(663, 357), Keys.W, Keys.S, Keys.D, Keys.A, Keys.C);
             map.addBomberman(b2);
             //test
             timer = new System.Windows.Forms.Timer();

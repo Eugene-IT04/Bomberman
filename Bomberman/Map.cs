@@ -84,7 +84,7 @@ namespace Bomberman
                 {
                     for (int j = 0; j < gameObjects.Count; j++)
                     {
-                        if (flames[i].checkColl(gameObjects[j]))
+                        if (flames[i].checkColl(gameObjects[j]) && flames[i].active)
                         {
                             Block bl = (Block)gameObjects[j];
                             if (bl.breakable) gameObjects.RemoveAt(j);
@@ -94,18 +94,21 @@ namespace Bomberman
                             break;
                         }
                     }
-                    for (int j = 0; j < bombermans.Count; j++)
+                    if (flames[i].active)
                     {
-                        if (flames[i].active && flames[i].checkColl(bombermans[j]))
+                        for (int j = 0; j < bombermans.Count; j++)
                         {
-                            bombermans.RemoveAt(j);
-                            flames[i].power = 0;
-                            flames[i].active = false;
-                            break;
+                            if (flames[i].checkColl(bombermans[j]))
+                            {
+                                bombermans.RemoveAt(j);
+                                flames[i].power = 0;
+                                flames[i].active = false;
+                                break;
+                            }
                         }
+                        nextFlame = flames[i].spread();
+                        if (nextFlame != null) flames.Add(nextFlame);
                     }
-                    nextFlame = flames[i].spread();
-                    if (nextFlame != null) flames.Add(nextFlame);
                 }
             }
             clearFlames();
@@ -115,6 +118,7 @@ namespace Bomberman
         {
             for(int i = 0; i < flames.Count; i++)
             {
+                flames[i].active = false;
                 flames[i].tics--;
                 if (flames[i].tics <= 0)
                 {
@@ -182,8 +186,8 @@ namespace Bomberman
                         cont = false;
                         continue;
                     }
-                    if((i + j) % 2 == 0 && i % 2 == 0) gameObjects.Add(new Block(new Point(50 * i + i, 50 * j + j), false));
-                    else gameObjects.Add(new Block(new Point(50 * i + i, 50 * j + j), true));
+                    if((i + j) % 2 == 0 && i % 2 == 0) gameObjects.Add(new Block(new Point(50 * i, 50 * j), false));
+                    else gameObjects.Add(new Block(new Point(50 * i, 50 * j), true));
                 }
             }
         }

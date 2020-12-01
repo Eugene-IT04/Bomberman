@@ -23,7 +23,7 @@ namespace Bomberman
         public void init()
         {
             //test
-            g.Clear(Color.LightCyan);
+            g.Clear(Color.Blue);
             //test
         }
 
@@ -31,7 +31,7 @@ namespace Bomberman
         {
             pb.Image = bt;
             pb.Refresh();
-            g.Clear(Color.LightCyan);
+            g.Clear(Color.LightBlue);
         }
 
         public void draw(List<GameObjectIntr> gameObjects)

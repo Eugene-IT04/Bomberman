@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Bomberman
@@ -11,7 +12,7 @@ namespace Bomberman
         public Keys rightKey;
         public Keys leftKey;
         public Keys plantBombKey;
-        public float speed = 1.5f;
+        public float speed = 2.5f;
         public PointF moveVector;
         public Directions direction;
 
@@ -25,7 +26,7 @@ namespace Bomberman
             this.leftKey = leftKey;
             this.plantBombKey = plantBombKey;
             //test
-            size = new Size(50, 50);
+            size = new Size(45, 45);
             texture = new Bitmap(size.Width, size.Height);
             using (var g = Graphics.FromImage(texture))
                 g.Clear(Color.Green);
@@ -42,7 +43,7 @@ namespace Bomberman
             coords.X += moveVector.X;
             coords.Y += moveVector.Y;
         }
-        public Bomb plantBomb() { return new Bomb(new PointF(coords.X, coords.Y)); }
+        public Bomb plantBomb() { return new Bomb(new PointF((float)Math.Round((double)coords.X / 50) * 50, (float)Math.Round((double)coords.Y / 50) * 50)); }
 
     }
 }
