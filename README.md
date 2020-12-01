@@ -1,2 +1,2 @@
 # Bomberman
-University project by Eugene Sytnyk and Ilya Peretyatko
+University project by Eugene Sytnyk
