@@ -15,6 +15,7 @@ namespace Bomberman
         List<Bomberman> bombermans;
         List<Bomb> bombs;
         List<Flame> flames;
+        public bool gameIsOn = true;
         int width, height;
         PointF moveUp = new PointF(0, -1), moveDown = new PointF(0, 1), moveLeft = new PointF(-1, 0), moveRight = new PointF(1, 0), stop = new PointF(0, 0);
 
@@ -54,6 +55,15 @@ namespace Bomberman
                 if (Math.Abs(res.X) > Math.Abs(current.X)) res.X = current.X;
                 if (Math.Abs(res.Y) > Math.Abs(current.Y)) res.Y = current.Y;
             }
+            for(int i = 0; i < bombs.Count; i++)
+            {
+                if (!bombs[i].checkColl(b))
+                {
+                    current = b.checkColl(bombs[i], moveVector);
+                    if (Math.Abs(res.X) > Math.Abs(current.X)) res.X = current.X;
+                    if (Math.Abs(res.Y) > Math.Abs(current.Y)) res.Y = current.Y;
+                }
+            }
             return res;
         }
 
@@ -68,6 +78,14 @@ namespace Bomberman
             {
                 if (bombs[i].exploded())
                 {
+                    foreach (var b in bombermans)
+                    {
+                        if (b.name.Equals(bombs[i].owner))
+                        {
+                            b.currentBombCount--;
+                            break;
+                        }
+                    }
                     flames.AddRange(bombs[i].getFlames());
                     bombs.RemoveAt(i);
                     i--;
@@ -101,6 +119,7 @@ namespace Bomberman
                             if (flames[i].checkColl(bombermans[j]))
                             {
                                 bombermans.RemoveAt(j);
+                                checkForWinner();
                                 flames[i].power = 0;
                                 flames[i].active = false;
                                 break;
@@ -175,18 +194,17 @@ namespace Bomberman
 
         private void fill()
         {
-            bool cont = false;
+            bool cont;
             for(int i = 0; i < 16; i++)
             {
-                for(int j = 0; j < 9; j++)
+                for (int j = 0; j < 9; j++)
                 {
                     cont = (i == 1 && j == 1) || (i == 1 && j == 2) || (i == 2 && j == 1) || (i == 13 && j == 7) || (i == 13 && j == 6) || (i == 12 && j == 7);
                     if (cont)
                     {
-                        cont = false;
                         continue;
                     }
-                    if((i + j) % 2 == 0 && i % 2 == 0) gameObjects.Add(new Block(new Point(50 * i, 50 * j), false));
+                    if (((i + j) % 2 == 0 && i % 2 == 0) || i == 0 || i == 15 || j == 0 || j == 8) gameObjects.Add(new Block(new Point(50 * i, 50 * j), false));
                     else gameObjects.Add(new Block(new Point(50 * i, 50 * j), true));
                 }
             }
@@ -200,7 +218,11 @@ namespace Bomberman
                 else if (key == b.downKey) b.direction = Directions.down;
                 else if (key == b.leftKey) b.direction = Directions.left;
                 else if (key == b.rightKey) b.direction = Directions.right;
-                else if (key == b.plantBombKey) bombs.Add(b.plantBomb());
+                else if (key == b.plantBombKey)
+                {
+                    if(b.currentBombCount < b.maxBombsCount)
+                    bombs.Add(b.plantBomb());
+                }
             }
         }
         
@@ -212,6 +234,15 @@ namespace Bomberman
                 else if (key == b.downKey && b.direction == Directions.down) b.direction = Directions.stop;
                 else if (key == b.rightKey && b.direction == Directions.right) b.direction = Directions.stop;
                 else if (key == b.leftKey && b.direction == Directions.left) b.direction = Directions.stop;
+            }
+        }
+
+        public void checkForWinner()
+        {
+            if (bombermans.Count == 1)
+            {
+                gameIsOn = false;
+                MessageBox.Show(bombermans[0].name + " is win!");
             }
         }
     }

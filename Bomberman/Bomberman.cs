@@ -15,9 +15,14 @@ namespace Bomberman
         public float speed = 2.5f;
         public PointF moveVector;
         public Directions direction;
+        public int maxBombsCount = 1;
+        public int currentBombCount = 0;
+        public int bombPower = 1;
+        public String name;
 
-        public Bomberman(Point startPoint, Keys upKey, Keys downKey, Keys rightKey, Keys leftKey, Keys plantBombKey)
+        public Bomberman(Point startPoint, Keys upKey, Keys downKey, Keys rightKey, Keys leftKey, Keys plantBombKey, String name)
         {
+            this.name = name;
             direction = Directions.stop;
             this.coords = startPoint;
             this.upKey = upKey;
@@ -43,7 +48,10 @@ namespace Bomberman
             coords.X += moveVector.X;
             coords.Y += moveVector.Y;
         }
-        public Bomb plantBomb() { return new Bomb(new PointF((float)Math.Round((double)coords.X / 50) * 50, (float)Math.Round((double)coords.Y / 50) * 50)); }
+        public Bomb plantBomb() {
+            currentBombCount++;
+            return new Bomb(new PointF((float)Math.Round((double)coords.X / 50) * 50, (float)Math.Round((double)coords.Y / 50) * 50), name, bombPower); 
+        }
 
     }
 }

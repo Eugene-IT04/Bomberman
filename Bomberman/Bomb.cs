@@ -11,17 +11,20 @@ namespace Bomberman
     {
         static Bitmap texture;
         int tics = 170;
-        int power = 3;
+        int power = 1;
+        public String owner;
 
         static Bomb()
         {
             texture = Properties.Resources.bomb_texture2;
         }
 
-        public Bomb(PointF coords)
+        public Bomb(PointF coords, String owner, int power)
         {
             this.coords = coords;
             size = new Size(50, 50);
+            this.owner = owner;
+            this.power = power;
         }
 
         public override Bitmap getTexture()
