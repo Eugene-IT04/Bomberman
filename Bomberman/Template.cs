@@ -49,6 +49,15 @@ namespace Bomberman
             else if (moveVector.X < 0) rPoint.X = moveVector.X + onX;
             if (moveVector.Y > 0) rPoint.Y = moveVector.Y - onY;
             else if (moveVector.Y < 0) rPoint.Y = moveVector.Y + onY;
+            if(rPoint.X <= 0.001 && rPoint.Y <= 0.001) 
+            {
+                float absOnX = Math.Abs(onX);
+                float absOnY = Math.Abs(onY);
+                if (absOnX < 10 && moveVector.Y != 0 && x1 > x3) rPoint.X = absOnX;
+                else if (absOnX < 10 && moveVector.Y != 0 && x1 < x3) rPoint.X = -absOnX;
+                if (absOnY < 10 && moveVector.X != 0 && y1 > y3) rPoint.Y = absOnY;
+                else if (absOnY < 10 && moveVector.X != 0 && y1 < y3) rPoint.Y = -absOnY;
+            }
             return rPoint;
         }
     }

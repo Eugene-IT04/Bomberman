@@ -18,9 +18,9 @@ namespace Bomberman
             size = new Size(50, 50);
             coords = new PointF(coord.X, coord.Y);
             Random rand = new Random();
-            int i = rand.Next(0, 3);
-            if (i == 0) bonusType = BonusTypes.incrBombCount;
-            else if (i == 1) bonusType = BonusTypes.powerUpBomb;
+            int i = rand.Next(0, 30);
+            if (i < 6) bonusType = BonusTypes.powerUpBomb;
+            else if (i < 20) bonusType = BonusTypes.incrBombCount;
             else bonusType = BonusTypes.speedUp;
         }
         public override Bitmap getTexture()
@@ -32,9 +32,9 @@ namespace Bomberman
 
         public void improveBomberman(Bomberman b)
         {
-            if (bonusType == BonusTypes.speedUp && b.speed <= 4) b.speed += 0.4f;
-            else if (bonusType == BonusTypes.powerUpBomb && b.bombPower < 4) b.bombPower++;
-            else if (b.maxBombsCount < 4) b.maxBombsCount++;
+            if (bonusType == BonusTypes.speedUp && b.speed <= 5) b.speed += 0.5f;
+            else if (bonusType == BonusTypes.powerUpBomb && b.bombPower < 6) b.bombPower++;
+            else if (b.maxBombsCount < 5) b.maxBombsCount++;
         }
 
     }

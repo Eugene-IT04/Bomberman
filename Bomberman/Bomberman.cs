@@ -12,7 +12,7 @@ namespace Bomberman
         public Keys rightKey;
         public Keys leftKey;
         public Keys plantBombKey;
-        public float speed = 2.5f;
+        public float speed = 3f;
         public PointF moveVector;
         public Directions direction;
         public int maxBombsCount = 1;

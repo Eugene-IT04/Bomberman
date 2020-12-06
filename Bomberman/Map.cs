@@ -11,6 +11,8 @@ namespace Bomberman
 {
     class Map
     {
+        int w = 19, h = 13;
+        int[,] objMap;
         List<GameObjectIntr> gameObjects;
         List<Bomberman> bombermans;
         List<Bomb> bombs;
@@ -20,6 +22,7 @@ namespace Bomberman
         PointF moveUp = new PointF(0, -1), moveDown = new PointF(0, 1), moveLeft = new PointF(-1, 0), moveRight = new PointF(1, 0), stop = new PointF(0, 0);
         public Map()
         {
+            objMap = new int[w, h];
             gameObjects = new List<GameObjectIntr>();
             bombermans = new List<Bomberman>();
             bombs = new List<Bomb>();
@@ -63,16 +66,20 @@ namespace Bomberman
             for(int i = 0; i < gameObjects.Count; i++)
             {
                 current = b.checkColl(gameObjects[i], moveVector);
-                if (Math.Abs(res.X) > Math.Abs(current.X)) res.X = current.X;
-                if (Math.Abs(res.Y) > Math.Abs(current.Y)) res.Y = current.Y;
+                if (Math.Abs(res.X) > Math.Abs(current.X) && moveVector.X != 0) res.X = current.X;
+                if (Math.Abs(res.Y) > Math.Abs(current.Y) && moveVector.Y != 0) res.Y = current.Y;
+                if (moveVector.X == 0 && current.X != 0) res.X = current.X;
+                if (moveVector.Y == 0 && current.Y != 0) res.Y = current.Y;
             }
             for(int i = 0; i < bombs.Count; i++)
             {
                 if (!bombs[i].checkColl(b))
                 {
                     current = b.checkColl(bombs[i], moveVector);
-                    if (Math.Abs(res.X) > Math.Abs(current.X)) res.X = current.X;
-                    if (Math.Abs(res.Y) > Math.Abs(current.Y)) res.Y = current.Y;
+                    if (Math.Abs(res.X) > Math.Abs(current.X) && moveVector.X != 0) res.X = current.X;
+                    if (Math.Abs(res.Y) > Math.Abs(current.Y) && moveVector.Y != 0) res.Y = current.Y;
+                    if (moveVector.X == 0 && current.X != 0) res.X = current.X;
+                    if (moveVector.Y == 0 && current.Y != 0) res.Y = current.Y;
                 }
             }
             return res;
@@ -119,7 +126,7 @@ namespace Bomberman
                             Block bl = (Block)gameObjects[j];
                             if (bl.breakable)
                             {
-                                if(r.Next(100) < 15)
+                                if(r.Next(100) < 20)
                                 {
                                     bonuses.Add(new Bonus(gameObjects[j].getCoords()));
                                 }
@@ -224,17 +231,25 @@ namespace Bomberman
         private void fill()
         {
             bool cont;
-            for(int i = 0; i < 19; i++)
+            for(int i = 0; i < w; i++)
             {
-                for (int j = 0; j < 13; j++)
+                for (int j = 0; j < h; j++)
                 {
                     cont = (i == 1 && j == 1) || (i == 1 && j == 2) || (i == 2 && j == 1) || (i == 17 && j == 11) || (i == 17 && j == 10) || (i == 16 && j == 11);
                     if (cont)
                     {
                         continue;
                     }
-                    if (((i + j) % 2 == 0 && i % 2 == 0) || i == 0 || i == 18 || j == 0 || j == 12) gameObjects.Add(new Block(new Point(50 * i, 50 * j), false));
-                    else gameObjects.Add(new Block(new Point(50 * i, 50 * j), true));
+                    if (((i + j) % 2 == 0 && i % 2 == 0) || i == 0 || i == 18 || j == 0 || j == 12)
+                    {
+                        gameObjects.Add(new Block(new Point(50 * i, 50 * j), false));
+                        objMap[i, j] = 2;
+                    }
+                    else
+                    {
+                        gameObjects.Add(new Block(new Point(50 * i, 50 * j), true));
+                        objMap[i, j] = 1;
+                    }
                 }
             }
         }
