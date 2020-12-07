@@ -33,6 +33,7 @@ namespace Bomberman
 
         public void addBomberman(Bomberman bomberman)
         {
+            bomberman.objMap = objMap;
             bombermans.Add(bomberman);
         }
 
@@ -90,6 +91,21 @@ namespace Bomberman
             return new PointF(vector.X * number, vector.Y * number);
         }
 
+        private void bombermansTic()
+        {
+            foreach(var b in bombermans)
+            {
+                b.tic();
+                if (b.bombPlanted && b.currentBombCount < b.maxBombsCount)
+                {
+                    b.bombPlanted = false;
+                    Bomb bomb = b.plantBomb();
+                    bombs.Add(bomb);
+                    objMap[(int)bomb.getCoords().X / 50, (int)bomb.getCoords().Y / 50] = 5;
+                }
+            }
+        }
+
         private void bombTic()
         {
             for(int i = 0; i < bombs.Count; i++)
@@ -104,6 +120,7 @@ namespace Bomberman
                             break;
                         }
                     }
+                    objMap[(int)bombs[i].getCoords().X / 50, (int)bombs[i].getCoords().Y / 50] = 0;
                     flames.AddRange(bombs[i].getFlames());
                     bombs.RemoveAt(i);
                     i--;
@@ -129,7 +146,9 @@ namespace Bomberman
                                 if(r.Next(100) < 20)
                                 {
                                     bonuses.Add(new Bonus(gameObjects[j].getCoords()));
+                                    objMap[(int)gameObjects[j].getCoords().X / 50, (int)gameObjects[j].getCoords().Y / 50] = 10;
                                 }
+                                else objMap[(int)gameObjects[j].getCoords().X / 50, (int)gameObjects[j].getCoords().Y / 50] = 0;
                                 gameObjects.RemoveAt(j);
                             }
                             else flames[i].tics = 0;
@@ -155,6 +174,7 @@ namespace Bomberman
                         {
                             if (flames[i].checkColl(bonuses[j]))
                             {
+                                objMap[(int)bonuses[j].getCoords().X / 50, (int)bonuses[j].getCoords().Y / 50] = 0;
                                 bonuses.RemoveAt(j);
                                 flames[i].power = 0;
                                 flames[i].active = false;
@@ -192,6 +212,7 @@ namespace Bomberman
         {
             bombTic();
             processFlames();
+            bombermansTic();
             for (int i = 0; i < bombermans.Count; i++)
             {
                 var b = bombermans[i];
@@ -264,8 +285,12 @@ namespace Bomberman
                 else if (key == b.rightKey) b.direction = Directions.right;
                 else if (key == b.plantBombKey)
                 {
-                    if(b.currentBombCount < b.maxBombsCount)
-                    bombs.Add(b.plantBomb());
+                    if (b.currentBombCount < b.maxBombsCount)
+                    {
+                        Bomb bomb = b.plantBomb();
+                        bombs.Add(bomb);
+                        objMap[(int)bomb.getCoords().X / 50, (int)bomb.getCoords().Y / 50] = 5;
+                    }
                 }
             }
         }

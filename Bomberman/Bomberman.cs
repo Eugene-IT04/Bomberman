@@ -19,9 +19,13 @@ namespace Bomberman
         public int currentBombCount = 0;
         public int bombPower = 1;
         public String name;
+        public bool bombPlanted = false;
+        public int[,] objMap;
+        private bool isBot;
 
         public Bomberman(Point startPoint, Keys upKey, Keys downKey, Keys rightKey, Keys leftKey, Keys plantBombKey, String name, Bitmap texture_up, Bitmap texture_down, Bitmap texture_right, Bitmap texture_left, Bitmap texture_stop)
         {
+            isBot = false;
             this.texture_down = texture_down;
             this.texture_left = texture_left;
             this.texture_up = texture_up;
@@ -36,6 +40,28 @@ namespace Bomberman
             this.leftKey = leftKey;
             this.plantBombKey = plantBombKey;
             size = new Size(45, 45);
+        }
+
+        public Bomberman(Point startPoint, String name, Bitmap texture_up, Bitmap texture_down, Bitmap texture_right, Bitmap texture_left, Bitmap texture_stop)
+        {
+            isBot = true;
+            this.texture_down = texture_down;
+            this.texture_left = texture_left;
+            this.texture_up = texture_up;
+            this.texture_right = texture_right;
+            this.texture_stop = texture_stop;
+            this.name = name;
+            direction = Directions.stop;
+            this.coords = startPoint;
+            size = new Size(45, 45);
+        }
+
+        public void tic()
+        {
+            if (isBot)
+            {
+                direction = Directions.up;
+            }
         }
 
         public override Bitmap getTexture()

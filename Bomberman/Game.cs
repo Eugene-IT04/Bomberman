@@ -24,7 +24,7 @@ namespace Bomberman
             bomberman1 = new Bomberman(new Point(50, 50), Keys.Up, Keys.Down, Keys.Right, Keys.Left, Keys.Space, "Player1",
                 Properties.Resources.bomberman_green_up, Properties.Resources.bomberman_green_down, Properties.Resources.bomberman_green_right, Properties.Resources.bomberman_green_left, Properties.Resources.bomberman_green_stop);
             map.addBomberman(bomberman1);
-            bomberman2 = new Bomberman(new Point(850, 550), Keys.W, Keys.S, Keys.D, Keys.A, Keys.C, "Player2", 
+            bomberman2 = new Bomberman(new Point(850, 550),/* Keys.W, Keys.S, Keys.D, Keys.A, Keys.C, */ "Player2", 
                 Properties.Resources.bomberman_red_up, Properties.Resources.bomberman_red_down, Properties.Resources.bomberman_red_right, Properties.Resources.bomberman_red_left, Properties.Resources.bomberman_red_stop);
             map.addBomberman(bomberman2);
             timer = new System.Windows.Forms.Timer();
