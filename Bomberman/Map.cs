@@ -165,6 +165,7 @@ namespace Bomberman
                             {
                                 bombermans.RemoveAt(j);
                                 checkForWinner();
+                                if (!gameIsOn) return;
                                 flames[i].power = 0;
                                 flames[i].active = false;
                                 break;

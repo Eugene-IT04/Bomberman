@@ -10,7 +10,7 @@ namespace Bomberman
     class Bomb : Template
     {
         static Bitmap texture;
-        int tics = 170;
+        int tics = 160;
         int power = 1;
         public String owner;
 

@@ -28,7 +28,7 @@ namespace Bomberman
                 Properties.Resources.bomberman_red_up, Properties.Resources.bomberman_red_down, Properties.Resources.bomberman_red_right, Properties.Resources.bomberman_red_left, Properties.Resources.bomberman_red_stop);
             map.addBomberman(bomberman2);
             timer = new System.Windows.Forms.Timer();
-            timer.Interval = 2;
+            timer.Interval = 15;
             timer.Tick += tic;
             timer.Enabled = true;
         }
