@@ -27,6 +27,8 @@ namespace Bomberman
         private Action currentAction;
         private bool readyForAction = true;
         private PointF nextCoord;
+        private static Random rng = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
+        private PointF prCoord;
 
         public Bomberman(Point startPoint, Keys upKey, Keys downKey, Keys rightKey, Keys leftKey, Keys plantBombKey, String name, Bitmap texture_up, Bitmap texture_down, Bitmap texture_right, Bitmap texture_left, Bitmap texture_stop)
         {
@@ -60,6 +62,7 @@ namespace Bomberman
             this.coords = startPoint;
             size = new Size(45, 45);
             actions = new List<Action>();
+            prCoord = new PointF();
         }
 
         private void generateActions()
@@ -68,20 +71,35 @@ namespace Bomberman
             Action nextAction = Action.doNothing;
             Point currentPos = getCurrentPosition();
             List<Action> availableActs = getAvailableActions(currentPos);
+           // if (availableActs.Count == 0) return;
+            bool needPlantBomb = false;
             do
             {
                 lastAction = nextAction;
                 for (int i = 0; i < availableActs.Count; i++)
                 {
                     nextAction = availableActs[i];
+                    if (i == availableActs.Count - 1) needPlantBomb = true;
+                    if (!isInSafe(step(currentPos, nextAction)) && availableActs.Count > 2) continue;
+                    if (!isInSafe(currentPos) && isInSafe(step(currentPos, nextAction))) break;
                     if (!opposite(lastAction, nextAction)) break;
                 }
-                if (opposite(lastAction, nextAction)) break;
+                if (opposite(lastAction, nextAction))
+                {
+                    needPlantBomb = true;
+                    break;
+                }
+                if (isInSafe(currentPos) && !isInSafe(step(currentPos, nextAction)))
+                {
+                    //needPlantBomb = false;
+                    break;
+                }
                 actions.Add(nextAction);
                 currentPos = step(currentPos, nextAction);
                 availableActs = getAvailableActions(currentPos);
-            } while (actions.Count < 6);
-            actions.Add(Action.plantBomb);
+            } while (actions.Count < 13);
+            if(needPlantBomb) actions.Add(Action.plantBomb);
+            //if (!isInSafe(currentPos)) generateActions();
         }
 
         private bool opposite(Action a1, Action a2)
@@ -96,36 +114,55 @@ namespace Bomberman
         {
             int x = p.X;
             int y = p.Y;
-            for(int i = 0; ; i++)
+            if (objMap[x, y] == 5) return false;
+            for(; ;)
             {
                 if (objMap[x, ++y] == 5) return false;
-                if (objMap[x, ++y] != 0) break;
+                if (objMap[x, y] != 0) break;
             }
-            for (int i = 0; ; i++)
+            y = p.Y;
+            for (; ;)
             {
                 if (objMap[x, --y] == 5) return false;
-                if (objMap[x, --y] != 0) break;
+                if (objMap[x, y] != 0) break;
             }
-            for (int i = 0; ; i++)
+            y = p.Y;
+            for (; ;)
             {
                 if (objMap[++x, y] == 5) return false;
-                if (objMap[++x, y] != 0) break;
+                if (objMap[x, y] != 0) break;
             }
-            for (int i = 0; ; i++)
+            x = p.X;
+            for (; ;)
             {
-                if (objMap[--x, y + 1] == 5) return false;
-                if (objMap[--x, y + 1] != 0) break;
+                if (objMap[--x, y] == 5) return false;
+                if (objMap[x, y] != 0) break;
             }
             return true;
+        }
+
+        public static void Shuffle<T>(List<T> list)
+        {
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
         }
 
         private List<Action> getAvailableActions(Point p)
         {
             List<Action> d = new List<Action>();
             if (objMap[p.X, p.Y - 1] == 10 || objMap[p.X, p.Y - 1] == 0) d.Add(Action.goUp);
-            if (objMap[p.X + 1, p.Y] == 10 || objMap[p.X + 1, p.Y] == 0) d.Add(Action.goRight);
             if (objMap[p.X - 1, p.Y] == 10 || objMap[p.X - 1, p.Y] == 0) d.Add(Action.goLeft);
+            if (objMap[p.X + 1, p.Y] == 10 || objMap[p.X + 1, p.Y] == 0) d.Add(Action.goRight);
             if (objMap[p.X, p.Y + 1] == 10 || objMap[p.X, p.Y + 1] == 0) d.Add(Action.goDown);
+            if(rng.Next(3) < 2)
+            Shuffle<Action>(d);
             return d;
         }
 
@@ -141,9 +178,18 @@ namespace Bomberman
         public void tic()
         {
             if (isBot)
-            {
+            {   
+                if(coords.Equals(prCoord) && direction != Directions.stop)
+                {
+                    actions.Clear();
+                    direction = Directions.stop;
+                    return;
+                }
                 if (actions.Count == 0) generateActions();
-                currentAction = actions[0];
+                if (actions.Count != 0)
+                {
+                    currentAction = actions[0];
+                }
                 if (readyForAction)
                 {
                     Point p = getCurrentPosition();
@@ -184,12 +230,12 @@ namespace Bomberman
                         }
                     }
                 }
-                if(Math.Abs(coords.X - nextCoord.X) <= 1 && Math.Abs(coords.Y - nextCoord.Y) <= speed)
+                if(Math.Abs(coords.X - nextCoord.X) <= speed && Math.Abs(coords.Y - nextCoord.Y) <= speed)
                 {
                     nextCoord.X = -speed;
                     nextCoord.Y = -speed;
                     if (actions.Count > 0)actions.RemoveAt(0);
-                    direction = Directions.stop;
+                    if(actions.Count == 0 || actions[0] == Action.plantBomb)direction = Directions.stop;
                     readyForAction = true;
                 }
             }
@@ -206,6 +252,8 @@ namespace Bomberman
 
         public void move()
         {
+            prCoord.X = coords.X;
+            prCoord.Y = coords.Y;
             coords.X += moveVector.X;
             coords.Y += moveVector.Y;
         }
@@ -215,10 +263,6 @@ namespace Bomberman
             return new Point((int)Math.Round((double)coords.X / 50), (int)Math.Round((double)coords.Y / 50));
         }
 
-        private PointF getCurrentPositionF()
-        {
-            return new PointF(coords.X / 50f, coords.Y / 50f);
-        }
         public Bomb plantBomb() {
             currentBombCount++;
             Point p = getCurrentPosition();

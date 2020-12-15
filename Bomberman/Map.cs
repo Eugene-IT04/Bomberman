@@ -164,6 +164,7 @@ namespace Bomberman
                             if (flames[i].checkColl(bombermans[j]))
                             {
                                 bombermans.RemoveAt(j);
+                                gameIsOn = false;
                                 checkForWinner();
                                 if (!gameIsOn) return;
                                 flames[i].power = 0;

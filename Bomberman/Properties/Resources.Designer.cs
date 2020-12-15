@@ -63,6 +63,16 @@ namespace Bomberman.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap backGround {
+            get {
+                object obj = ResourceManager.GetObject("backGround", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap block_standart_texture2 {
             get {
                 object obj = ResourceManager.GetObject("block_standart_texture2", resourceCulture);
